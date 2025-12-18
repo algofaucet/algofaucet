@@ -1,0 +1,39 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "NODE_VERSION": "20",
+    "VITE_ALGOD_SERVER": "https://mainnet-api.algonode.cloud",
+    "VITE_ALGOD_PORT": "443",
+    "VITE_ALGOD_TOKEN": "",
+    "VITE_ALGOD_NETWORK": "mainnet",
+    "VITE_INDEXER_SERVER": "https://mainnet-idx.algonode.cloud",
+    "VITE_INDEXER_PORT": "443",
+    "VITE_INDEXER_TOKEN": ""
+  }
+}

@@ -1,0 +1,864 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
+
+html, body {
+  background-image: url('/FAUCET.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+html.dark-mode, body.dark-mode {
+  background-image: url('/FAUCET_DARK.webp');
+}
+
+.landing-header {
+  position: relative;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+  color: #ffffff;
+}
+
+.landing-header h1 {
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+}
+
+.landing-header p {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.main-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.5px !important;
+  margin-bottom: 2rem;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+}
+
+.wallet-button {
+  background-color: #87CEFA;
+  color: black;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+  transition: all 0.3s ease;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 auto;
+}
+
+.wallet-button:hover {
+  background-color: rgba(116, 185, 255, 0.9);
+}
+
+.wallet-modal {
+  background-color: transparent;
+  backdrop-filter: none;
+  border-radius: 0;
+  border: none;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.wallet-option {
+  width: 130px;
+  padding: 8px 16px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  margin-bottom: 8px;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  height: 36px;
+}
+
+.wallet-option:last-child {
+  margin-bottom: 0;
+}
+
+.wallet-option img {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.wallet-option span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wallet-option.pera {
+  background-color: #FFEE55;
+  color: black;
+}
+
+.wallet-option.defly {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+}
+
+.wallet-option.exodus {
+  background-color: #1B1B1B;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wallet-option.exodus:hover {
+  background-color: #2D2D2D;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.wallet-option.lute {
+  background-color: #1B1B1B;
+  color: white;
+  border: 1px solid white;
+}
+
+.wallet-option.lute:hover {
+  background-color: #2D2D2D;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.wallet-option:hover {
+  transform: translateY(-1px);
+}
+
+.disconnect-button {
+  background-color: #e45a5a;
+  color: white;
+  width: 130px;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 400;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  box-sizing: border-box;
+}
+
+.disconnect-button:hover {
+  background-color: #8B0000;
+}
+
+.faucet-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.faucet-content {
+  position: relative;
+  width: 90%;
+  max-width: 350px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+  transform: translateY(0);
+}
+
+.faucet-header {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.faucet-balance {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #FFFFFF;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.faucet-status {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.faucet-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.faucet-button {
+  background-color: #87CEFA;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 500;
+  width: 160px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.faucet-button:hover {
+  background-color: rgba(116, 185, 255, 0.9);
+}
+
+.faucet-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.faucet-info-message {
+  position: fixed;
+  top: calc(50% + 160px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  color: #4a5568;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 8px 16px;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.faucet-info-message div {
+  white-space: nowrap;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.claim-button-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  z-index: 5;
+}
+
+.donation-container {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  width: 100%;
+  max-width: 600px;
+  padding: 0 20px;
+}
+
+.donation-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #191919;
+  cursor: pointer;
+  padding: 4px 8px;
+  text-align: center;
+}
+
+/* Dark mode: make donation header and addresses white for contrast */
+html.dark-mode .donation-title,
+body.dark-mode .donation-title {
+  color: #FFFFFF;
+}
+
+/* Donation labels (FAUCET / LOGICSIG / CREATOR) */
+.donation-label {
+  color: #191919;
+  font-size: 14px;
+}
+
+html.dark-mode .donation-label,
+body.dark-mode .donation-label {
+  color: #FFFFFF;
+}
+
+.donation-address {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  border: none !important;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  color: #191919;
+  position: static;
+  text-align: left;
+  display: inline;
+}
+
+html.dark-mode .donation-address,
+body.dark-mode .donation-address {
+  color: #FFFFFF;
+}
+
+.donation-address:hover {
+  opacity: 1;
+}
+
+.donation-qr {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.donation-qr.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.donation-qr img {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 10px;
+}
+
+
+.donation-title:hover {
+  animation: neonRedPulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes neonRedPulse {
+  0% { color: #191919; }
+  50% { color: #ff4d4d; }
+  100% { color: #191919; }
+}
+
+.ad-container {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 99999;
+  width: 300px;
+  height: 600px;
+  background: transparent;
+  pointer-events: auto !important;
+}
+
+.ad-container.left {
+  left: 20px;
+}
+
+.ad-container.right {
+  right: 20px;
+}
+
+.ad-container iframe {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 100000;
+  cursor: pointer !important;
+}
+
+.ad-container #frame {
+  pointer-events: auto !important;
+  z-index: 100000 !important;
+}
+
+@media screen and (max-width: 1280px) {
+  .ad-container {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .main-title {
+    font-size: 1.75rem;
+    top: 20%;
+  }
+
+  .wallet-button,
+  .wallet-modal,
+  .disconnect-button {
+    width: 140px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .wallet-option {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .faucet-container {
+    padding: 1.5rem;
+    width: 85%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .main-title {
+    font-size: 1.5rem;
+    top: 25%;
+  }
+
+  .wallet-button,
+  .connect-wallet-button {
+    height: 36px !important;
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+    width: 130px !important;
+  }
+
+  .wallet-modal {
+    width: 130px;
+  }
+
+  .wallet-option {
+    width: 130px;
+    height: 36px;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .disconnect-button {
+    width: 130px;
+    height: 36px;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .faucet-container {
+    padding: 0;
+  }
+
+  .faucet-content {
+    width: 85%;
+    padding: 1.25rem;
+  }
+
+  .faucet-header {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .faucet-balance, .faucet-status {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .faucet-button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .connect-wallet-button {
+    height: 36px !important;
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+  }
+
+  .wallet-modal {
+    width: 150px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .faucet-content {
+    width: 90%;
+    padding: 1rem;
+  }
+
+  .faucet-header {
+    font-size: 1.2rem;
+  }
+
+  .faucet-button {
+    width: 160px;
+  }
+}
+
+@media screen and (max-height: 600px) {
+  .main-title {
+    top: 30%;
+  }
+
+  .claim-button-container {
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .donation-container {
+    bottom: 90px !important;
+  }
+
+  .donation-address {
+    font-size: 0.7rem;
+    padding: 6px 12px;
+  }
+
+  /* Hide ad frame on mobile */
+  #frame {
+    display: none !important;
+  }
+}
+
+.algo-particle {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: floatAndFade 2s ease-out forwards;
+}
+
+/* Utility: hide elements on small screens */
+@media screen and (max-width: 640px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+@keyframes floatAndFade {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.faucet-info-modal {
+  position: fixed;
+  top: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 25px;
+  padding: 0.3rem 1rem;
+  width: auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0);
+  z-index: 1000;
+  text-align: center;
+  color: #4A5568;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.faucet-info-modal div {
+  margin: 0.25rem 0;
+}
+
+.remaining-blocks-text {
+  color: #87CEFA;
+  margin-top: 0.5rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 12px;
+  min-width: 300px;
+  max-width: 500px;
+  position: relative;
+  color: white;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+  padding: 0.5rem;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-body p {
+  margin: 0;
+  text-align: center;
+}
+
+.home-button, .connect-wallet-button, .mini-pill {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(8px);
+}
+
+.home-button:hover, .connect-wallet-button:hover, .mini-pill:hover {
+  transform: translateY(-1px);
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* CLAIM button: keep the same hover motion as connect-wallet-button, but without any background fill */
+.claim-button {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background-color: transparent !important;
+  backdrop-filter: blur(8px);
+}
+.claim-button:hover {
+  transform: translateY(-1px);
+  background-color: transparent !important;
+}
+.claim-button:disabled {
+  cursor: not-allowed;
+}
+
+.quiz-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.quiz-content {
+  width: 90%;
+  max-width: 400px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  pointer-events: auto;
+}
+
+.quiz-title {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-shadow: none;
+}
+
+.quiz-subtitle {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #FFFFFF;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-shadow: none;
+}
+
+.quiz-wallet {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-shadow: none;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.quiz-option {
+  background-color: #87CEFA;
+  color: black;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 400;
+  width: 100%;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  text-shadow: none;
+  box-shadow: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.quiz-option:hover {
+  background-color: rgba(116, 185, 255, 0.9);
+  box-shadow: none;
+}
+
+.quiz-option:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.connect-wallet-button {
+  height: 36px !important;
+  padding: 8px 16px !important;
+  box-sizing: border-box !important;
+  font-size: 14px !important;
+  width: auto !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Classe pour masquer la scrollbar tout en gardant la fonctionnalité */
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Animation pour la mise à jour du prize pool */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Ad banner removed */

@@ -1,0 +1,699 @@
+/* App.css */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #38b2ac;
+}
+
+.hero-content {
+  text-align: center;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  max-width: 24rem;
+  background-color: #ffffff;
+  margin: 0 auto;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.grid {
+  display: grid;
+}
+
+.btn {
+  margin: 0.5rem;
+}
+
+.btn-primary {
+  background-color: #1a202c;
+  color: #fff;
+}
+
+.divider {
+  border-top: 1px solid #e2e8f0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  z-index: 9999;
+  overflow: auto;
+}
+
+.modal-open {
+  display: block;
+}
+
+.modal-box {
+  margin: 2.5em auto;
+  background: #fff;
+  border-radius: 0.5em;
+  width: 40em;
+  max-width: 90vw;
+  padding: 1em;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+.m-2 {
+  margin: 0.5rem;
+}
+
+.pt-5 {
+  padding-top: 1.25rem;
+}
+
+.grid {
+  display: grid;
+}
+
+.btn {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #00aba2;
+  color: #fff;
+}
+
+.btn-warning {
+  background-color: #d69e2e;
+}
+
+.border-1 {
+  border-width: 1px;
+}
+
+.border-teal-800 {
+  border-color: #2c7a7b;
+}
+
+.modal-action {
+  display: grid;
+  margin-top: 1rem;
+}
+
+.divider {
+  border-top: 1px solid #e2e8f0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.quiz-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.quiz-content {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  padding: 1.2rem;
+  border-radius: 20px;
+  max-width: 350px;
+  width: 90%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.quiz-title {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+  font-size: 1.3rem;
+}
+
+.quiz-progress {
+  text-align: center;
+  margin-bottom: 0.8rem;
+  color: #ffffff;
+  font-size: 0.85rem;
+}
+
+.quiz-question h3 {
+  margin-bottom: 0.8rem;
+  color: #ffffff;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.quiz-option {
+  padding: 0.6rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.quiz-option:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.quiz-option.correct {
+  background-color: rgba(76, 175, 80, 0.8);
+  border-color: rgba(76, 175, 80, 0.8);
+}
+
+.quiz-option.incorrect {
+  background-color: rgba(244, 67, 54, 0.8);
+  border-color: rgba(244, 67, 54, 0.8);
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.quiz-result {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.quiz-result h3 {
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+.quiz-result p {
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.connect-message {
+  margin-top: 1rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Landing Page Styles */
+.landing-page {
+  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url('/FAUCET.webp');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Dark mode override for landing background */
+html.dark-mode .landing-page, body.dark-mode .landing-page {
+  background-image: url('/FAUCET_DARK.webp');
+}
+
+.landing-header {
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, calc(-50% - 3rem));
+}
+
+.landing-header h1 {
+  font-size: 3rem;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.2px;
+}
+
+.landing-header p {
+  font-size: 1.4rem;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  margin: 0;
+}
+
+.landing-buttons {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.landing-buttons > div {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.landing-instructions {
+  position: absolute;
+  bottom: 32%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.landing-instructions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.landing-instructions li {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin: 0.3rem 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.landing-content {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  padding: 0.8rem;
+  border-radius: 20px;
+  max-width: 300px;
+  width: 85%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 15rem;
+}
+
+.landing-content h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+
+.landing-description {
+  margin-bottom: 2rem;
+}
+
+.landing-description p {
+  margin: 0.5rem 0;
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+
+/* Ensure common text near donation is readable in dark */
+html.dark-mode .landing-description p,
+body.dark-mode .landing-description p {
+  color: #FFFFFF;
+}
+
+.landing-guide {
+  margin: 0;
+}
+
+.landing-guide h2 {
+  font-size: 1.4rem;
+  color: #4a5568;
+  margin-bottom: 0.8rem;
+  text-shadow: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.landing-guide h2:hover {
+  opacity: 0.7;
+}
+
+.landing-guide h2::after {
+  content: "▼";
+  font-size: 0.8em;
+  transition: transform 0.3s ease;
+}
+
+.landing-guide h2.collapsed::after {
+  transform: rotate(-90deg);
+}
+
+.guide-steps {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 1000px;
+  opacity: 1;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.guide-steps.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
+.guide-steps li {
+  color: #4a5568;
+  font-size: 0.9rem;
+  text-shadow: none;
+  line-height: 1.2;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+
+.landing-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.feature-item {
+  padding: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.feature-item h3 {
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.feature-item p {
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.main-button {
+  padding: 0.6rem 2rem;
+  font-size: 1.2rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+
+.main-button:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.landing-footer {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.footer-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.footer-button:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* Information Pages Styles */
+.info-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-image: url('/FAUCET.webp');
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+/* Dark mode override for info pages */
+html.dark-mode .info-page, body.dark-mode .info-page {
+  background-image: url('/FAUCET_DARK.webp');
+}
+
+.info-content {
+  background-color: transparent;
+  padding: 2rem;
+  max-width: 1000px;
+  width: 90%;
+}
+
+.info-content h1 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.info-section {
+  margin-bottom: 2.5rem;
+}
+
+.info-section h2 {
+  color: #ffffff;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.info-section p {
+  line-height: 1.6;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.feature-card h3 {
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+  color: #ffffff;
+}
+
+.use-cases-list {
+  list-style: none;
+  padding: 0;
+}
+
+.use-cases-list li {
+  padding: 0.5rem 0;
+  position: relative;
+  padding-left: 1.5rem;
+  color: #ffffff;
+}
+
+.use-cases-list li:before {
+  content: "•";
+  color: #ffffff;
+  position: absolute;
+  left: 0;
+}
+
+.privacy-list {
+  list-style: none;
+  padding: 0;
+}
+
+.privacy-list li {
+  padding: 0.5rem 0;
+  position: relative;
+  padding-left: 1.5rem;
+  color: #ffffff;
+}
+
+.privacy-list li:before {
+  content: "✓";
+  color: #ffffff;
+  position: absolute;
+  left: 0;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.contact-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.contact-card h3 {
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.contact-card a, .contact-card p {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-card a:hover {
+  opacity: 0.8;
+}
+
+.back-button {
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.6rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .landing-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .landing-buttons {
+    gap: 0.8rem;
+  }
+
+  .main-button {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    min-width: 130px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .landing-header h1 {
+    font-size: 2rem;
+  }
+
+  .landing-buttons {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .main-button {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+/* Masquer la scrollbar pour tous les navigateurs */
+.hidden-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
+}
+

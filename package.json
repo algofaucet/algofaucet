@@ -1,0 +1,81 @@
+{
+  "name": "algofaucet",
+  "version": "0.1.0",
+  "author": {
+    "name": "AlgoFaucet",
+    "email": "algofaucet@gmail.com"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.x",
+    "npm": ">=9.0"
+  },
+  "devDependencies": {
+    "@algorandfoundation/algokit-client-generator": "^4.0.6",
+    "@babel/plugin-transform-react-jsx": "^7.25.9",
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.14",
+    "browserify-zlib": "^0.2.0",
+    "p-limit": "^3.1.0",
+    "process": "^0.11.10",
+    "rollup-plugin-visualizer": "^5.14.0",
+    "stream-browserify": "^3.0.0",
+    "terser": "^5.39.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.3",
+    "util": "^0.12.5",
+    "vite": "^5.1.3",
+    "vite-plugin-node-polyfills": "^0.22.0"
+  },
+  "dependencies": {
+    "@algorandfoundation/algokit-utils": "^8.1.0",
+    "@blockshake/defly-connect": "^1.2.1",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.10",
+    "@perawallet/connect": "^1.4.1",
+    "@txnlab/use-wallet": "^4.0.0",
+    "@txnlab/use-wallet-react": "^4.1.0",
+    "@types/react-router-dom": "^5.3.3",
+    "algosdk": "^3.4.0",
+    "axios": "^1.8.3",
+    "lute-connect": "^1.6.2",
+    "notistack": "^3.0.1",
+    "qrcode.react": "^3.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.1",
+    "tslib": "^2.6.2"
+  },
+  "scripts": {
+    "generate:app-clients": "algokit generate client -o src/contracts",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "overrides": {
+    "ws@>7.0.0 <7.5.9": "7.5.10"
+  }
+}
