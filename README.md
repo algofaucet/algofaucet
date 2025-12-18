@@ -2,7 +2,7 @@
 
 AlgoFaucet is a decentralized faucet on Algorand Mainnet that lets users claim ALGO with zero-fee transactions.
 
-![AlgoFaucet preview](ss/projects/ss/public/Preview.png)
+![AlgoFaucet preview](public/Preview.png)
 
 ## Features
 
