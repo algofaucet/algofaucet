@@ -1,40 +1,37 @@
 from pyteal import *
 
 # Constants
-CLAIM_AMOUNT = Int(2_000)          # Regular claim amount of 0.002 Algo
-FIRST_CLAIM_AMOUNT = Int(100_000)  # First claim amount of 0.1 Algo (with captcha)
-BLOCK_INTERVAL = Int(10_000)       # Block interval 10,000 blocks
-AFCAPTCHA_APP_ID = Int(3371668755) # AFCaptcha App ID
-MIN_FEE = Int(1000)             # Minimum fee in microAlgos
-MIN_BALANCE = Int(100_000)       # Minimum balance required for the contract
-BOX_SIZE = Int(8)               # Box size in bytes (just to store the last block)
+CLAIM_AMOUNT_DEFAULT = Int(2_000)
+BLOCK_INTERVAL_DEFAULT = Int(10_000)
+MIN_FEE = Int(1000)
+MIN_BALANCE = Int(100_000)
+BOX_SIZE = Int(8)
+CONFIG_FEE = Int(8_000)
+DELETE_LSIG_ADDR = Addr("77DOC6HTCDKUJSX2D37UVWSTIFN3TC3RA5P3C3A6C7BJW6WYID2MGT7WUI")
+KEY_CLAIM_AMOUNT = Bytes("claim_amount")
+KEY_BLOCK_INTERVAL = Bytes("block_interval")
 
-# Helper: target account is the sender (single-step claim)
 @Subroutine(TealType.bytes)
 def target_account() -> Expr:
     return Txn.sender()
 
-# Subroutine to check if user has completed AFCaptcha in current transaction group
-@Subroutine(TealType.uint64)
-def has_completed_captcha_in_group() -> Expr:
-    """Check if user has completed AFCaptcha in the current transaction group"""
+@Subroutine(TealType.none)
+def check_payment_in_group(amount: Expr, receiver: Expr) -> Expr:
+    """Require group size 2 and that the other tx is Payment of amount to receiver from sender."""
+    other_idx = If(Txn.group_index() == Int(0), Int(1), Int(0))
     return Seq([
-        # Must be in a group of at least 2 transactions for captcha verification
-        If(Global.group_size() >= Int(2)).Then(
-            # Check if first transaction in group is AFCaptcha solve
-            If(And(
-                Gtxn[Int(0)].type_enum() == TxnType.ApplicationCall,
-                Gtxn[Int(0)].application_id() == AFCAPTCHA_APP_ID,
-                Gtxn[Int(0)].application_args.length() >= Int(1),
-                Gtxn[Int(0)].application_args[0] == Bytes("solve"),
-                Gtxn[Int(0)].sender() == Txn.sender()
-            )).Then(Int(1)).Else(Int(0))
-        ).Else(Int(0))
+        Assert(Global.group_size() == Int(2), comment="Group size must be 2"),
+        Assert(
+            And(
+                Gtxn[other_idx].type_enum() == TxnType.Payment,
+                Gtxn[other_idx].amount() == amount,
+                Gtxn[other_idx].receiver() == receiver,
+                Gtxn[other_idx].sender() == Txn.sender()
+            ),
+            comment="Payment of required amount to required receiver from sender required"
+        ),
     ])
 
-# removed request box name; not needed in single-step flow
-
-# Subroutine to check and create box if necessary
 @Subroutine(TealType.none)
 def check_and_create_box() -> Expr:
     box_name = target_account()
@@ -47,7 +44,6 @@ def check_and_create_box() -> Expr:
         )
     ])
 
-# Subroutine to get the last claim block (with safety check)
 @Subroutine(TealType.uint64)
 def get_last_claim_block() -> Expr:
     box_name = target_account()
@@ -61,13 +57,11 @@ def get_last_claim_block() -> Expr:
         )
     ])
 
-# Subroutine to update the last claim block
 @Subroutine(TealType.none)
 def update_last_claim_block() -> Expr:
     box_name = target_account()
     return BoxPut(box_name, Itob(Txn.first_valid()))
 
-# Subroutine to verify claim conditions
 @Subroutine(TealType.none)
 def verify_claim_conditions(claim_amount: Expr) -> Expr:
     return Seq([
@@ -93,7 +87,6 @@ def verify_claim_conditions(claim_amount: Expr) -> Expr:
         )
     ])
 
-# Subroutine to send payment
 @Subroutine(TealType.none)
 def send_algo_payment(claim_amount: Expr) -> Expr:
     return Seq([
@@ -102,36 +95,25 @@ def send_algo_payment(claim_amount: Expr) -> Expr:
             TxnField.type_enum: TxnType.Payment,
             TxnField.receiver: target_account(),
             TxnField.amount: claim_amount,
-            TxnField.fee: Int(0)  # inner tx fee covered by outer AppCall fee payer (LogicSig)
+            TxnField.fee: Int(0)  
         }),
         InnerTxnBuilder.Submit()
     ])
 
-# Subroutine to delete box (only creator can use)
 @Subroutine(TealType.none)
-def creator_delete_box() -> Expr:
+def delete_box() -> Expr:
     box_name = Txn.application_args[1]
-    box_len = BoxLen(box_name)
     return Seq([
-        Assert(
-            Txn.sender() == Global.creator_address(),
-            comment="Only contract creator can delete boxes"
-        ),
-        Assert(
-            Txn.application_args.length() >= Int(2),
-            comment="Box name must be provided as second argument"
-        ),
-        box_len,
-        Assert(
-            box_len.hasValue(),
-            comment="Box does not exist"
-        ),
+        Assert(Txn.application_args.length() >= Int(2), comment="Box name (address) required"),
+        Assert(Len(box_name) == Int(32), comment="Box name must be 32-byte address"),
+        check_payment_in_group(CONFIG_FEE, DELETE_LSIG_ADDR),
+        box_len := BoxLen(box_name),
+        Assert(box_len.hasValue(), comment="Box does not exist"),
         Pop(BoxDelete(box_name))
     ])
 
-# Subroutine to delete many boxes (only creator can use, up to 8 per call)
 @Subroutine(TealType.none)
-def creator_delete_many() -> Expr:
+def clean() -> Expr:
     num_args = Txn.application_args.length()
     return Seq([
         Assert(Txn.sender() == Global.creator_address(), comment="Only contract creator can delete boxes"),
@@ -146,7 +128,42 @@ def creator_delete_many() -> Expr:
         If(num_args >= Int(9)).Then(Seq([box_len8 := BoxLen(Txn.application_args[8]), Assert(box_len8.hasValue(), comment="Box[8] does not exist"), Pop(BoxDelete(Txn.application_args[8]))])),
     ])
 
-# Subroutine to allow creator to withdraw Algos from contract to their address
+@Subroutine(TealType.none)
+def set_amount() -> Expr:
+    new_amt = Btoi(Txn.application_args[1])
+    return Seq([
+        Assert(Txn.application_args.length() >= Int(2), comment="Amount value required"),
+        check_payment_in_group(CONFIG_FEE, Global.current_application_address()),
+        Assert(
+            Or(
+                new_amt == Int(1_000),
+                new_amt == Int(2_000),
+                new_amt == Int(4_000),
+                new_amt == Int(8_000),
+            ),
+            comment="Allowed amounts: 1000, 2000, 4000, 8000 microAlgos"
+        ),
+        App.globalPut(KEY_CLAIM_AMOUNT, new_amt),
+    ])
+
+@Subroutine(TealType.none)
+def set_interv() -> Expr:
+    new_interval = Btoi(Txn.application_args[1])
+    return Seq([
+        Assert(Txn.application_args.length() >= Int(2), comment="Interval value required"),
+        check_payment_in_group(CONFIG_FEE, Global.creator_address()),
+        Assert(
+            Or(
+                new_interval == Int(5_000),
+                new_interval == Int(10_000),
+                new_interval == Int(20_000),
+                new_interval == Int(40_000),
+            ),
+            comment="Allowed intervals: 5000, 10000, 20000, 40000 blocks"
+        ),
+        App.globalPut(KEY_BLOCK_INTERVAL, new_interval),
+    ])
+
 @Subroutine(TealType.none)
 def creator_withdraw() -> Expr:
     amount = Btoi(Txn.application_args[1])
@@ -168,88 +185,59 @@ def creator_withdraw() -> Expr:
         Approve()
     ])
 
-# Claim with captcha verification: 0.1 Algo for first claim (requires captcha in group), 0.002 Algo for regular claims
+@Subroutine(TealType.uint64)
+def get_claim_amount() -> Expr:
+    return If(
+        App.globalGet(KEY_CLAIM_AMOUNT) == Int(0),
+        CLAIM_AMOUNT_DEFAULT,
+        App.globalGet(KEY_CLAIM_AMOUNT),
+    )
 
-# Method to claim Algo with captcha verification for first claim
+@Subroutine(TealType.uint64)
+def get_block_interval() -> Expr:
+    return If(
+        App.globalGet(KEY_BLOCK_INTERVAL) == Int(0),
+        BLOCK_INTERVAL_DEFAULT,
+        App.globalGet(KEY_BLOCK_INTERVAL),
+    )
+
 @Subroutine(TealType.none)
 def claim() -> Expr:
     last_claim_block = ScratchVar(TealType.uint64)
     is_first_claim = ScratchVar(TealType.uint64)
     is_block_interval_ok = ScratchVar(TealType.uint64)
-    is_new_beneficiary = ScratchVar(TealType.uint64)
-    payout_amount = ScratchVar(TealType.uint64)
-    user_has_captcha = ScratchVar(TealType.uint64)
+    block_interval = ScratchVar(TealType.uint64)
 
     return Seq([
-        # Check if user is a new beneficiary (no box AND zero balance)
-        box_len_check := BoxLen(target_account()),
-        box_len_check,
-        is_new_beneficiary.store(
-            And(
-                Not(box_len_check.hasValue()),
-                Balance(target_account()) == Int(0)
-            )
-        ),
-
-        # Check if user has completed captcha in current group
-        user_has_captcha.store(has_completed_captcha_in_group()),
-
-        # Ensure box exists (create if necessary)
+        block_interval.store(get_block_interval()),
         check_and_create_box(),
-
-        # Load last claim block
         last_claim_block.store(get_last_claim_block()),
-
-        # First claim?
         is_first_claim.store(last_claim_block.load() == Int(0)),
-
-        # Interval check
-        is_block_interval_ok.store(Txn.first_valid() >= last_claim_block.load() + BLOCK_INTERVAL),
-
-        # Determine payout amount based on captcha and new beneficiary status
-        payout_amount.store(
-            If(And(is_new_beneficiary.load() == Int(1), user_has_captcha.load() == Int(1)))
-            .Then(FIRST_CLAIM_AMOUNT)  # 0.1 Algo for new users with captcha
-            .Else(CLAIM_AMOUNT)        # 0.002 Algo for regular claims
-        ),
-
-        # Verify contract can cover payout
-        verify_claim_conditions(payout_amount.load()),
-
-        # For new beneficiaries, require captcha completion in transaction group
-        If(is_new_beneficiary.load() == Int(1)).Then(
-            Assert(
-                user_has_captcha.load() == Int(1),
-                comment="Captcha required for first claim - must be in transaction group"
-            )
-        ),
-
-        # Enforce interval for all claims except the very first one (when box doesn't exist)
-        If(is_new_beneficiary.load() == Int(1)).Then(
-            # First claim ever - no interval required
+        is_block_interval_ok.store(Txn.first_valid() >= last_claim_block.load() + block_interval.load()),
+        verify_claim_conditions(get_claim_amount()),
+        If(is_first_claim.load()).Then(
             Seq([])
         ).Else(
-            # All subsequent claims require interval
-            Assert(is_block_interval_ok.load() == Int(1), comment="Must wait 10,000 blocks between claims")
+            Assert(is_block_interval_ok.load() == Int(1), comment="Must wait required blocks between claims")
         ),
-
-        # Pay target and update last-claim block
-        send_algo_payment(payout_amount.load()),
+        send_algo_payment(get_claim_amount()),
         update_last_claim_block()
     ])
 
-# Main program
 def approval_program() -> Expr:
     handle_creation = Seq([
-        Return(Int(1))
+        App.globalPut(KEY_CLAIM_AMOUNT, CLAIM_AMOUNT_DEFAULT),
+        App.globalPut(KEY_BLOCK_INTERVAL, BLOCK_INTERVAL_DEFAULT),
+        Return(Int(1)),
     ])
 
-    # Unique entrypoint: "claim" (single-step)
     on_call = Seq([
         Cond(
             [Txn.application_args[0] == Bytes("claim"), claim()],
-            [Txn.application_args[0] == Bytes("delete_box"), creator_delete_box()],
-            [Txn.application_args[0] == Bytes("delete_many"), creator_delete_many()],
+            [Txn.application_args[0] == Bytes("delete"), delete_box()],
+            [Txn.application_args[0] == Bytes("clean"), clean()],
+            [Txn.application_args[0] == Bytes("amount"), set_amount()],
+            [Txn.application_args[0] == Bytes("interv"), set_interv()],
             [Txn.application_args[0] == Bytes("withdraw"), creator_withdraw()],
         ),
         Return(Int(1))
@@ -266,8 +254,5 @@ def approval_program() -> Expr:
         [Txn.on_completion() == OnComplete.NoOp, on_call],
     )
 
-# Cleanup program
 def clear_state_program() -> Expr:
-    return Approve()
-
-
+    return Approve() 
