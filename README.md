@@ -12,7 +12,7 @@ AlgoFaucet is a decentralized faucet on Algorand Mainnet that lets users claim A
 
 ## Links
 
-- Web Interface: [AlgoFaucet.org](https://algofaucet.org)
+- Web Interface: https://algofaucet.netlify.app/
 - Mainnet Contract: App ID `3461957850`
 - Smart contract source (PyTeal): [`contracts/contract.py`](contracts/contract.py)
 
